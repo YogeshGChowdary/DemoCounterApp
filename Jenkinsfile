@@ -109,5 +109,23 @@ pipeline{
                     }
                 }
             }
+
+            stage('push image to DockerHub'){
+
+                steps{
+
+                    script{
+
+                        withCredentials([string(credentialsId: 'docker-creds', variable: 'docker_hub_creds')]){
+
+                            sh 'docker login -u yogeshf5 -p ${docker_hub_creds}'
+                            sh 'docker image push yogeshf5/$JOB_NAME:v1.$BUILD_ID'
+                            sh 'docker image push yogeshf5/$JOB_NAME:v1.latest'
+                        }
+
+                
+                    }
+                }
+            }
         }              
 }
